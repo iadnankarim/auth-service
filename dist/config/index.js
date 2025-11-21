@@ -1,0 +1,7 @@
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig();
+const { PORT } = process.env;
+export const Config = {
+    PORT
+};
+//# sourceMappingURL=index.js.map
