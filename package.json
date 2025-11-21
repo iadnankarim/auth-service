@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
+    "dev": "nodemon --exec tsx src/server.ts",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format:fix": "prettier . --write",
@@ -19,16 +19,21 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
     "eslint": "^9.39.1",
     "husky": "^9.1.7",
+    "nodemon": "^3.1.11",
     "prettier": "3.6.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
+    "express": "^5.1.0",
     "lint-staged": "^16.2.7"
   },
   "lint-staged": {
