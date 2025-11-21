@@ -1,0 +1,173 @@
+# Prettier, ESLint & Lint-Staged Setup Guide
+
+================================================================================
+## STEP 1: Install Dependencies
+================================================================================
+
+npm install -D prettier eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin lint-staged husky
+
+--------------------------------------------------------------------------------
+
+================================================================================
+## STEP 2: Prettier Setup
+================================================================================
+
+### 2.1 Create `.prettierrc` file in root:
+
+```json
+{
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "es5"
+}
+```
+
+### 2.2 Create `.prettierignore` file (optional):
+
+```
+dist
+node_modules
+```
+
+### 2.3 Add scripts in `package.json`:
+
+```json
+"scripts": {
+  "format:check": "prettier . --check",
+  "format:fix": "prettier . --write"
+}
+```
+
+--------------------------------------------------------------------------------
+
+================================================================================
+## STEP 3: ESLint Setup
+================================================================================
+
+### 3.1 Create `eslint.config.mjs` file in root:
+
+```javascript
+import tsParser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+
+export default [
+  {
+    files: ["**/*.ts", "**/*.tsx", "**/*.js"],
+    ignores: ["dist", "node_modules"],
+    languageOptions: {
+      parser: tsParser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+    },
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+    },
+    rules: {
+      "dot-notation": "error",
+      // Add more rules as needed
+    },
+  },
+];
+```
+
+### 3.2 Add scripts in `package.json`:
+
+```json
+"scripts": {
+  "lint:check": "eslint .",
+  "lint:fix": "eslint . --fix"
+}
+```
+
+--------------------------------------------------------------------------------
+
+================================================================================
+## STEP 4: Husky Setup (Git Hooks)
+================================================================================
+
+### 4.1 Initialize Husky:
+
+```bash
+npx husky init
+```
+
+This creates:
+- `.husky/` folder
+- `.husky/pre-commit` file
+
+--------------------------------------------------------------------------------
+
+================================================================================
+## STEP 5: Lint-Staged Setup
+================================================================================
+
+### 5.1 Add lint-staged config in `package.json`:
+
+```json
+"lint-staged": {
+  "*.ts": [
+    "npm run format:fix",
+    "npm run lint:fix"
+  ]
+}
+```
+
+### 5.2 Update `.husky/pre-commit` file:
+
+```bash
+npx lint-staged
+```
+
+--------------------------------------------------------------------------------
+
+================================================================================
+## HOW IT ALL WORKS TOGETHER
+================================================================================
+
+1. Developer runs: git add . && git commit -m "message"
+2. Husky intercepts the commit (pre-commit hook)
+3. Husky runs: npx lint-staged
+4. Lint-staged finds all staged .ts files
+5. For each staged file:
+   - Runs Prettier to format code
+   - Runs ESLint to fix lint errors
+6. If everything passes -> Commit succeeds
+7. If anything fails -> Commit is blocked
+
+--------------------------------------------------------------------------------
+
+================================================================================
+## USEFUL COMMANDS
+================================================================================
+
+# Check formatting (no changes)
+npm run format:check
+
+# Fix formatting
+npm run format:fix
+
+# Check lint errors (no changes)
+npm run lint:check
+
+# Fix lint errors
+npm run lint:fix
+
+--------------------------------------------------------------------------------
+
+================================================================================
+## FINAL package.json SCRIPTS SECTION
+================================================================================
+
+```json
+"scripts": {
+  "dev": "nodemon src/server.ts",
+  "format:check": "prettier . --check",
+  "format:fix": "prettier . --write",
+  "lint:check": "eslint .",
+  "lint:fix": "eslint . --fix",
+  "prepare": "husky"
+}
+```
+
+================================================================================
