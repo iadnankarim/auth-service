@@ -16,5 +16,8 @@ export default [
     plugins: {
       "@typescript-eslint": tsPlugin,
     },
+    rules: {
+      "dot-notation": "error",
+    },
   },
 ];
