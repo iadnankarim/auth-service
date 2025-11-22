@@ -34,7 +34,8 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "lint-staged": "^16.2.7"
+    "lint-staged": "^16.2.7",
+    "winston": "^3.18.3"
   },
   "lint-staged": {
     "*.ts": [

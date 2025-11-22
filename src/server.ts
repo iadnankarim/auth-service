@@ -2,6 +2,7 @@
 
 import app from "./app.js";
 import { Config } from "./config/index.js";
+import logger from "./config/logger.js";
 
 // console.log(Config.PORT);
 
@@ -10,7 +11,7 @@ const startServer = () => {
   const PORT = Config.PORT;
 
   try {
-    app.listen(PORT, () => console.log(`listening on port ${PORT}`));
+    app.listen(PORT, () => logger.info("server is listening on port", {port :PORT}));
   } catch (error) {
     console.log(error);
   }
