@@ -233,3 +233,9 @@
 // ```
 
 // ================================================================================
+
+
+
+// docker run --rm -it -v D:\Study\Mern\auth-service:/usr/src/app -v /usr/src/app/node_modules --env-file D:\Study\Mern\auth-service\.env -p 5501:5501 -e NODE_ENV=development auth-service:dev
+
+// docker image ls
