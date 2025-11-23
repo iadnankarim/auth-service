@@ -236,6 +236,118 @@
 
 
 
+// ================================================================================
+// ## STEP 6: Docker Setup
+// ================================================================================
+
+// ### 6.1 Create `Dockerfile` in root:
+
+// ```dockerfile
+// FROM node:22-alpine
+//
+// WORKDIR /usr/src/app
+//
+// COPY package*.json ./
+//
+// RUN npm install
+//
+// COPY . .
+//
+// EXPOSE 5501
+//
+// CMD ["npm", "run", "dev"]
+// ```
+
+// ### 6.2 Create `.dockerignore` in root:
+
+// ```
+// node_modules
+// dist
+// .git
+// .env
+// ```
+
+// ### 6.3 Create `docker-compose.yml` in root:
+
+// ```yaml
+// version: '3.8'
+// services:
+//   auth-service:
+//     build:
+//       context: .
+//       dockerfile: Dockerfile
+//     ports:
+//       - "5501:5501"
+//     volumes:
+//       - .:/usr/src/app
+//       - /usr/src/app/node_modules
+//     env_file:
+//       - .env
+//     environment:
+//       - NODE_ENV=development
+// ```
+
+// --------------------------------------------------------------------------------
+
+// ================================================================================
+// ## STEP 7: Docker + Nodemon Fix (File Watching Issue)
+// ================================================================================
+
+// ### Problem:
+// Docker containers mein file system events (inotify) host machine se
+// container tak properly propagate nahi hote, especially Windows/Mac pe.
+// Isliye nodemon restart nahi hota jab file save karte ho.
+
+// ### 7.1 Solution 1: Legacy Watch Mode (Recommended)
+// Update `package.json` dev script:
+
+// ```json
+// "scripts": {
+//   "dev": "nodemon -L --exec tsx src/server.ts"
+// }
+// ```
+// Note: `-L` flag enables legacy watch mode (polling)
+
+// ### 7.2 Solution 2: Create `nodemon.json` in root:
+
+// ```json
+// {
+//   "watch": ["src"],
+//   "ext": "ts,json",
+//   "legacyWatch": true,
+//   "pollingInterval": 1000,
+//   "exec": "tsx src/server.ts"
+// }
+// ```
+
+// ### 7.3 Solution 3: Environment Variable in docker-compose.yml:
+
+// ```yaml
+// environment:
+//   - CHOKIDAR_USEPOLLING=true
+// ```
+
+// --------------------------------------------------------------------------------
+
+// ================================================================================
+// ## DOCKER USEFUL COMMANDS
+// ================================================================================
+
+// # Build Docker image
+// docker build -t auth-service:dev .
+
+// # Run container with volume mount
 // docker run --rm -it -v D:\Study\Mern\auth-service:/usr/src/app -v /usr/src/app/node_modules --env-file D:\Study\Mern\auth-service\.env -p 5501:5501 -e NODE_ENV=development auth-service:dev
 
-// docker image ls
+// # Using docker-compose (recommended)
+// docker-compose up --build        # Build and start
+// docker-compose up -d             # Run in background
+// docker-compose down              # Stop containers
+// docker-compose logs -f           # View logs
+
+// # Other useful commands
+// docker image ls                  # List images
+// docker ps                        # List running containers
+// docker exec -it <container> sh   # Enter container shell
+
+// ================================================================================
