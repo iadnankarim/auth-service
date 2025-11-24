@@ -21,5 +21,25 @@ describe("POST /auth/register", ()=>{
             // assest check 201 arha hai ya ni
             expect(response.statusCode).toBe(201)
         })
+
+        it("should return valid json response",async()=>{
+///AAA
+            const userData ={
+                firstName :"Adnan",
+                lastName:"karim",
+                email:"adnan@gmail.com",
+                password:"secret"
+            };
+
+            //act
+            const response = await request(app).post("/auth/register").send(userData)
+
+            // assest check 201 arha hai ya ni
+            // expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
+            expect(
+                (response.headers as Record<string, string>)
+                ['content-type']).toEqual(expect.stringContaining('json'))
+
+        })
     })
 })
