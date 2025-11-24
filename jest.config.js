@@ -5,6 +5,7 @@ export default {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
+  verbose:true,
   transform: {
     "^.+\\.ts$": [
       "ts-jest",

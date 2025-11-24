@@ -5,6 +5,7 @@ import type { Request, Response, NextFunction } from "express";
 import type { HttpError } from "http-errors";
 
 import logger from './config/logger.js';
+import AuthRouter from "./routes/auth.js";
 // import createHttpError from "http-errors";
 
 
@@ -22,10 +23,12 @@ const app = express()
 
 
 app.get('/', (req,res)=>{
-
-
     res.send('welcome to auth service')
 })
+
+
+app.use("/auth",AuthRouter)
+
 
 app.use((err:HttpError, req:Request, res:Response, next:NextFunction)=>{
     logger.error(err.message)
