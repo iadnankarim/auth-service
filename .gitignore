@@ -13,6 +13,7 @@ dist/
 .env.prod
 .env.test
 .env.dev
+.assignment_01.md
 
 
 

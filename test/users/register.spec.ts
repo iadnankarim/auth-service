@@ -88,5 +88,21 @@ describe("POST /auth/register", ()=>{
 
 
         })
+
+        it("should return id of the created user", async () => {
+    // Arrange - Test data prepare karo
+    const userData = {
+        firstName: "Adnan",
+        lastName: "karim",
+        email: "adnan@gmail.com",
+        password: "secret"
+    };
+
+    // Act - API call karo
+    const response = await request(app).post("/auth/register").send(userData);
+
+    // Assert - Check karo id aaya ya nahi
+    expect(response.body).toHaveProperty("id");
+});
     })
 })
