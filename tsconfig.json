@@ -1,9 +1,15 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"],
   "compilerOptions": {
     // File Layout
     "rootDir": "./src",
     "outDir": "./dist",
+
+    // Decorators (required for TypeORM)
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
@@ -22,6 +28,7 @@
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
     "exactOptionalPropertyTypes": true,
 
     // Style Options
@@ -33,7 +40,7 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     // Recommended Options
-    "strict": true,
+    "strict": false,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
